@@ -15,5 +15,6 @@ namespace PizzariaDAL.Entities
         public string Image { get; set; }
         public int CategoryId { get; set; }
         public Categorie Categorie { get; set; }
+        public IEnumerable<PlatCommande> platCommandes { get; set; }
     }
 }

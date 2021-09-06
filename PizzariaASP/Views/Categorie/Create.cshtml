@@ -1,0 +1,12 @@
+﻿@model CategorieAddModel
+<form method="post" asp-action="create">
+    <label>Nom de la catégorie</label>
+    @*<input name="Nom" value="@Model?.Nom" />*@  <!-- name="Nom" pour lier la propriété qui se trouve dans "CategorieAddModel" -->
+    <input asp-for="Nom" />
+    <span asp-validation-for="Nom"></span>
+    <button class="btn btn-danger">Envoyer</button>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" /> <!-- _ValidationScriptsPartial contient les librairies de validation javascript-->
+}

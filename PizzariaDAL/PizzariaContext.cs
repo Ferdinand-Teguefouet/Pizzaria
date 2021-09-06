@@ -12,6 +12,9 @@ namespace PizzariaDAL
     {
         public DbSet<Plat> Plats { get; set; }
         public DbSet<Categorie> categories { get; set; }
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<Commande> Commandes { get; set; }
+        public DbSet<PlatCommande> PlatCommandes { get; set; }
 
         public PizzariaContext(DbContextOptions options) : base(options)
         {

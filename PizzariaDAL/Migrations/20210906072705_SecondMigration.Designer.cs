@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PizzariaDAL;
 
 namespace PizzariaDAL.Migrations
 {
     [DbContext(typeof(PizzariaContext))]
-    partial class PizzariaContextModelSnapshot : ModelSnapshot
+    [Migration("20210906072705_SecondMigration")]
+    partial class SecondMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,7 +57,7 @@ namespace PizzariaDAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Client");
                 });
 
             modelBuilder.Entity("PizzariaDAL.Entities.Commande", b =>
@@ -78,7 +80,7 @@ namespace PizzariaDAL.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("Commandes");
+                    b.ToTable("Commande");
                 });
 
             modelBuilder.Entity("PizzariaDAL.Entities.Plat", b =>
@@ -138,7 +140,7 @@ namespace PizzariaDAL.Migrations
 
                     b.HasIndex("commandeId");
 
-                    b.ToTable("PlatCommandes");
+                    b.ToTable("PlatCommande");
                 });
 
             modelBuilder.Entity("PizzariaDAL.Entities.Commande", b =>

@@ -1,0 +1,44 @@
+﻿@*@model IEnumerable<PizzariaDAL.Entities.Categorie>*@
+@model IEnumerable<CategorieModel>
+
+<div class="mb-2">
+    <a class="btn btn-info" asp-controller="Categorie" asp-action="Create">Ajouter</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nom</th>
+            <th>...</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var categorie in Model)
+        {
+            <tr>
+                <td>@categorie.Id</td>
+                <td>@categorie.Nom</td>
+                <td>
+                    <a class="btn btn-danger deleteButton" asp-action="Delete" asp-route-id="@categorie.Id">Supprimer</a>
+                    <a class="btn btn-warning" asp-action="Update" asp-route-id="@categorie.Id">Editer</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        const deleteButton = document.getElementsByClassName("deleteButton");
+        for (let button of deleteButton) {
+            button.addEventListener('click', event => {
+                let reponse = confirm();
+                if (!reponse) {
+                    event.preventDefault();
+                }
+            })
+        }
+    </script>
+ }
+
