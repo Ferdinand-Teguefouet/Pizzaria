@@ -21,7 +21,7 @@ namespace PizzariaASP.Controllers
         public IActionResult Index()
         {
             //// Transformer la liste de catégorie en liste de "categorieModel"
-            //IEnumerable<Categorie> cat =  _dtc.categories;
+            //IEnumerable<Categorie> cat =  _dc.categories;
             //// => IEnumerable<CategorieModel>
             //List<CategorieModel> model = new List<CategorieModel>();
             //foreach (Categorie c in cat)
@@ -86,7 +86,7 @@ namespace PizzariaASP.Controllers
             }
                 _dc.categories.Remove(toDelete);
                 _dc.SaveChanges();
-                TempData["success"] = $"La catégorie {toDelete.Nom} a été supprimé!";
+                TempData["success"] = $"La catégorie {toDelete.Nom} a été supprimée!";
                 return RedirectToAction("Index");
         }
 
