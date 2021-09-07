@@ -8,8 +8,8 @@ namespace PizzariaASP.Models
 {
     public class CategorieAddModel
     {
-        [Required] // pour dire que le champ est obligatoire
-        [MaxLength(50)] // pour la longueur maximale
+        [Required(ErrorMessage = "Ce champ est requis")] // pour dire que le champ est obligatoire et ErrorMessage permet d'écraser le message d'erreur par défaut
+        [MaxLength(50, ErrorMessage = "Le champ est trop long")] // pour la longueur maximale
         public string Nom { get; set; }
     }
 }

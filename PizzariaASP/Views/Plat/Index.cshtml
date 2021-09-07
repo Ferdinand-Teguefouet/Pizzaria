@@ -1,0 +1,59 @@
+﻿@model PlatCategorieModel
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<form class="mb-3" method="get">
+    <select asp-for="Filtre">
+        <option>Choisissez une catégorie</option>
+        @foreach (CategorieModel c in Model.Categories)
+        {
+            <option value="@c.Id">@c.Nom</option>
+        }
+    </select>
+    <button class="btn btn-danger">Rechercher</button>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nom
+            </th>
+            <th>
+                Prix
+            </th>
+            <th>
+                Nom de la catégorie
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Plats)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.prix) €
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategorieNom)
+                </td>
+                <td>
+                    <a class="btn btn-outline-success " asp-action="Update" asp-route-id="@item.Id">Editer</a>
+                    <a class="btn btn-danger deleteButton" asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

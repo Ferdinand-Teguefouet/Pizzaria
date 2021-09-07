@@ -13,7 +13,7 @@ namespace PizzariaDAL.Entities
         public decimal Prix { get; set; } // avec decimal on a moin de problème
         public string Description { get; set; }
         public string Image { get; set; }
-        public int CategoryId { get; set; }
+        public int CategorieId { get; set; }
         public Categorie Categorie { get; set; }
         public IEnumerable<PlatCommande> platCommandes { get; set; }
     }
