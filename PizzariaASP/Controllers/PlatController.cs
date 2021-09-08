@@ -29,6 +29,7 @@ namespace PizzariaASP.Controllers
                     Id = p.Id,
                     Nom = p.Nom,
                     prix = p.Prix,
+                    Image = p.Image,
                     CategorieNom = p.Categorie.Nom
                 }),
                 
@@ -88,6 +89,37 @@ namespace PizzariaASP.Controllers
             _dc.SaveChanges();
             TempData["success"] = $"Le plat {toDelete.Nom} a été supprimé!";
             return RedirectToAction("Index");
+        }
+
+        public IActionResult update(int id)
+        {
+            // Récupérer l'objet dont l'id est celui passé en paramètre
+            Plat toUpdate = _dc.Plats.Find(id);
+            PlatUpdateModel platModel = new PlatUpdateModel
+            {
+                Nom = toUpdate.Nom,
+                Prix = toUpdate.Prix.ToString(),
+                Description = toUpdate.Description,
+                Image = toUpdate.Image
+            };
+            return View(platModel);
+        }
+
+        [HttpPost]
+        public IActionResult Update(int id, PlatUpdateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Plat toUpdate = _dc.Plats.Find(id);
+                toUpdate.Nom = model.Nom;
+                toUpdate.Prix = decimal.Parse(model.Prix.Replace('.', ','));
+                toUpdate.Description = model.Description;
+                toUpdate.Image = model.Image;
+                _dc.SaveChanges();
+                TempData["success"] = $"La mise à jour a bien eu lieu!";
+                return RedirectToAction("Index");
+            }
+            return View(model);
         }
     }
 }

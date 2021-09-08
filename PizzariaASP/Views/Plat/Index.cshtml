@@ -23,7 +23,7 @@
 </form>
 <table class="table">
     <thead>
-        <tr>
+        <tr class="table-active">
             <th>
                 Nom
             </th>
@@ -32,6 +32,9 @@
             </th>
             <th>
                 Nom de la catégorie
+            </th>
+            <th>
+                Image
             </th>
             <th></th>
         </tr>
@@ -50,6 +53,9 @@
                     @Html.DisplayFor(modelItem => item.CategorieNom)
                 </td>
                 <td>
+                    <img src="@Url.Content(item.Image)" alt="@Html.DisplayFor(modelItem => item.Nom)" class="rounded-pill shadow" style="width: 150px; height: auto;" />
+                </td>
+                <td>
                     <a class="btn btn-outline-success " asp-action="Update" asp-route-id="@item.Id">Editer</a>
                     <a class="btn btn-danger deleteButton" asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
                 </td>
@@ -57,3 +63,16 @@
         }
     </tbody>
 </table>
+@section Scripts{
+    <script>
+        const deleteButton = document.getElementsByClassName("deleteButton");
+        for (let button of deleteButton) {
+            button.addEventListener('click', event => {
+                let reponse = confirm();
+                if (!reponse) {
+                    event.preventDefault();
+                }
+            })
+        }
+    </script>
+}

@@ -11,6 +11,7 @@ namespace PizzariaASP.Models
         public string Nom { get; set; }
         public decimal prix { get; set; }
         public string Description { get; set; }
+        public string Image { get; set; }
         public string CategorieNom { get; set; }
     }
 }
