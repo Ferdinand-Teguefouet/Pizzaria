@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PizzariaASP.Models;
+using PizzariaASP.services;
 using PizzariaDAL;
 using PizzariaDAL.Entities;
 using System;
@@ -11,11 +12,11 @@ namespace PizzariaASP.Controllers
 {
     public class CategorieController : Controller
     {
-        private readonly PizzariaContext _dc;
+        private readonly ICategorieService _categorieService;
 
-        public CategorieController(PizzariaContext dc)
+        public CategorieController(ICategorieService service)
         {
-            _dc = dc;
+            _categorieService = service;
         }
 
         public IActionResult Index()
@@ -33,10 +34,7 @@ namespace PizzariaASP.Controllers
             //}
             //return View();
 
-            return View(_dc.categories.Select(c => new CategorieModel { 
-                Id = c.Id,
-                Nom = c.Nom
-            }));
+            return View(_categorieService.GatAll());
         }
 
         // afficher le formulaire
@@ -54,11 +52,7 @@ namespace PizzariaASP.Controllers
             // si le formulaire est valide
             if (valid)
             {
-                // transformer CategorieAddModel => Categorie
-                Categorie c = new Categorie { Nom = form.Nom };                
-                // enregistrer les données
-                _dc.categories.Add(c);
-                _dc.SaveChanges();
+                _categorieService.Add(form);
                 // popup enregistrement Ok
 
                 // permet d'envoyer des messages à la vue, mais ces messages sont perdus après une redirection
@@ -78,26 +72,17 @@ namespace PizzariaASP.Controllers
 
         public IActionResult Delete(int id)
         {
-            // Récupérer la catégorie dont l'id est celui passé en paramètre
-            Categorie toDelete = _dc.categories.Find(id);
-            if (toDelete == null)
+            if (_categorieService.Delete(id))
             {
                 return NotFound();
             }
-                _dc.categories.Remove(toDelete);
-                _dc.SaveChanges();
-                TempData["success"] = $"La catégorie {toDelete.Nom} a été supprimée!";
+                TempData["success"] = $"La catégorie a été supprimée!";
                 return RedirectToAction("Index");
         }
 
         public IActionResult update(int id)
         {
-            // Récupérer l'objet dont l'id est celui passé en paramètre
-            Categorie toUpdate = _dc.categories.Find(id);
-            CategorieUpdateModel model = new CategorieUpdateModel
-            {
-                Nom = toUpdate.Nom
-            };
+            CategorieUpdateModel model = _categorieService.GetOne(id);
             return View(model);
         }
 
@@ -106,9 +91,7 @@ namespace PizzariaASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                Categorie toUpdate = _dc.categories.Find(id);
-                toUpdate.Nom = model.Nom;
-                _dc.SaveChanges();
+                _categorieService.Update(id, model);
                 TempData["success"] = $"La mise à jour a bien eu lieu!";
                 return RedirectToAction("Index");
             }

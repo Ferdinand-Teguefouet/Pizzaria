@@ -25,6 +25,9 @@
     <thead>
         <tr class="table-active">
             <th>
+                Image
+            </th>
+            <th>
                 Nom
             </th>
             <th>
@@ -33,33 +36,32 @@
             <th>
                 Nom de la catégorie
             </th>
-            <th>
-                Image
-            </th>
+
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Plats)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nom)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.prix) €
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CategorieNom)
-                </td>
-                <td>
-                    <img src="@Url.Content(item.Image)" alt="@Html.DisplayFor(modelItem => item.Nom)" class="rounded-pill shadow" style="width: 150px; height: auto;" />
-                </td>
-                <td>
-                    <a class="btn btn-outline-success " asp-action="Update" asp-route-id="@item.Id">Editer</a>
-                    <a class="btn btn-danger deleteButton" asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <img src="/uploads/@(item.Image?? "placeholder-image.png")" alt="@Html.DisplayFor(modelItem => item.Nom)" class="rounded-pill shadow" style="width: 100px; height: auto;" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.prix) €
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategorieNom)
+            </td>
+
+            <td>
+                <a class="btn btn-outline-success " asp-action="Update" asp-route-id="@item.Id">Editer</a>
+                <a class="btn btn-danger deleteButton" asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

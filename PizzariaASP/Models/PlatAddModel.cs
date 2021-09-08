@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace PizzariaASP.Models
 
         public int CategorieId { get; set; }
 
+        public IFormFile File { get; set; }
         public IEnumerable<CategorieModel> Categories{ get; set; }
     }
 }

@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using PizzariaASP.Models;
 using PizzariaDAL;
 using PizzariaDAL.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,10 +14,12 @@ namespace PizzariaASP.Controllers
     public class PlatController : Controller
     {
         private readonly PizzariaContext _dc;
+        private readonly IWebHostEnvironment _env;
 
-        public PlatController(PizzariaContext dc)
+        public PlatController(PizzariaContext dc, IWebHostEnvironment env)
         {
             _dc = dc;
+            _env = env;
         }
         public IActionResult Index([FromQuery]int? filtre)
         {
@@ -61,11 +65,22 @@ namespace PizzariaASP.Controllers
         {
             if (ModelState.IsValid)
             {
+                string fileName = null;
+                // Création du fichier dans le dossier uploads qui se trouve dans wwwroot
+                if (form.File != null)
+                {
+                    fileName = Guid.NewGuid() + form.File.FileName;
+                    string path = Path.Combine(_env.WebRootPath, "uploads");
+                    using FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create);
+                    form.File.CopyTo(stream);
+                }
+
                 Plat plat = new Plat {
                     Nom = form.Nom,
                     Prix = decimal.Parse(form.Prix.Replace('.', ',')),
                     Description = form.Description,
-                    CategorieId = form.CategorieId
+                    CategorieId = form.CategorieId,
+                    Image = fileName
                 };
 
                 _dc.Plats.Add(plat);
@@ -75,19 +90,26 @@ namespace PizzariaASP.Controllers
                 return RedirectToAction("Index");
             }
             return View(form);
+            
         }
 
         public IActionResult Delete(int id)
         {
+            
             // Récupérer le plat dont l'id est celui passé en paramètre
             Plat toDelete = _dc.Plats.Find(id);
+            
             if (toDelete == null)
             {
                 return NotFound();
             }
             _dc.Plats.Remove(toDelete);
             _dc.SaveChanges();
-            TempData["success"] = $"Le plat {toDelete.Nom} a été supprimé!";
+            if (toDelete.Image != null)
+            {
+                System.IO.File.Delete(Path.Combine(_env.WebRootPath, "uploads", toDelete.Image)); // _env.WebRootPath trouve automatiquement le dossier uploads et le combine avec le nom de l'image
+            }
+            TempData["success"] = $"Le plat {toDelete.Nom} et le fichier image ont été supprimés!";
             return RedirectToAction("Index");
         }
 
