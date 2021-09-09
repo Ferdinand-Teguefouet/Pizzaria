@@ -38,11 +38,12 @@ namespace PizzariaASP.Controllers
 
         public IActionResult Delete(int id)
         {
-
-            if (!_platService.Delete(id))
+            Plat p = _platService.Delete(id);
+            if (p == null)
             {
                 return NotFound();
             }
+            _platService.DeleteFile(p.Image);
             TempData["success"] = $"Le plat et le fichier image ont été supprimés!";
             return RedirectToAction("Index");
         }

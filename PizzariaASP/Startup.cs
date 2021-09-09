@@ -25,7 +25,7 @@ namespace PizzariaASP
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(); // remplace "services.AddMvc();" dans dotNet Core 2.0
 
             // définition 
             services.AddDbContext<PizzariaContext>(
@@ -35,7 +35,8 @@ namespace PizzariaASP
             services.AddScoped<ICategorieService, CategorieService>();
             // Ajouter le service étendu (portée) IPlatService et spécification du type d'implémentation (PlatService)
             services.AddScoped<IPlatService, PlatService>();
-            services.AddMvc();
+            services.AddScoped<IFileService, FileService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

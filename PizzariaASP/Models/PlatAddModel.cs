@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Pizzeria.ASP.Validations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,7 +23,8 @@ namespace PizzariaASP.Models
         public string Description { get; set; }
 
         public int CategorieId { get; set; }
-
+        
+        [FileMimeType("image/jpg", "image/jpeg", "image/png", "image/x-icon")]
         public IFormFile File { get; set; }
         public IEnumerable<CategorieModel> Categories{ get; set; }
     }

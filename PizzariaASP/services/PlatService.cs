@@ -15,11 +15,15 @@ namespace PizzariaASP.services
     {
         private readonly PizzariaContext _dc;
         private readonly IWebHostEnvironment _env;
+        private readonly IFileService _fiservice;
+        private readonly ICategorieService _catService;
 
-        public PlatService(PizzariaContext dc, IWebHostEnvironment env)
+        public PlatService(PizzariaContext dc, IWebHostEnvironment env, IFileService fiservice, ICategorieService catService)
         {
             _dc = dc;
             _env = env;
+            _fiservice = fiservice;
+            _catService = catService;
         }
 
         public void Add(PlatAddModel form)
@@ -28,10 +32,7 @@ namespace PizzariaASP.services
             // Création du fichier dans le dossier uploads qui se trouve dans wwwroot
             if (form.File != null)
             {
-                fileName = Guid.NewGuid() + form.File.FileName;
-                string path = Path.Combine(_env.WebRootPath, "uploads");
-                using FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create);
-                form.File.CopyTo(stream);
+                fileName = _fiservice.AddFile(form.File);
             }
             Plat plat = new Plat
             {
@@ -50,31 +51,23 @@ namespace PizzariaASP.services
         {
             PlatAddModel pAModel = new PlatAddModel
             {
-                Categories = _dc.categories.Select(c => new CategorieModel
-                {
-                    Id = c.Id,
-                    Nom = c.Nom
-                })
+                Categories = _catService.GetAll()
             };
             return pAModel;
         }
 
-        public bool Delete(int id)
+        public Plat Delete(int id)
         {
             // Récupérer le plat dont l'id est celui passé en paramètre
             Plat toDelete = _dc.Plats.Find(id);
 
             if (toDelete == null)
             {
-                return false;
+                return null;
             }
             _dc.Plats.Remove(toDelete);
             _dc.SaveChanges();
-            if (toDelete.Image != null)
-            {
-                File.Delete(Path.Combine(_env.WebRootPath, "uploads", toDelete.Image)); // _env.WebRootPath trouve automatiquement le dossier uploads et le combine avec le nom de l'image
-            }
-            return true;
+            return toDelete;
         }
 
         public PlatCategorieModel GetAll([FromQuery] int? filter)
@@ -82,24 +75,9 @@ namespace PizzariaASP.services
             PlatCategorieModel pCModel = new PlatCategorieModel
             {
                 Filtre = filter,
-                Plats = _dc.Plats
-                        .Where(p => p.CategorieId == filter || filter == null)
-                        .Select(p => new PlatModel
-                        {
-                            Id = p.Id,
-                            Nom = p.Nom,
-                            prix = p.Prix,
-                            Image = p.Image,
-                            CategorieNom = p.Categorie.Nom
-                        }),
+                Plats = GetAllPlats(filter),
 
-                Categories = _dc.categories
-
-                .Select(c => new CategorieModel
-                {
-                    Id = c.Id,
-                    Nom = c.Nom
-                })
+                Categories = _catService.GetAll()
             };
             return pCModel;
         }
@@ -131,6 +109,28 @@ namespace PizzariaASP.services
             toUpdate.Image = form.Image;
             _dc.SaveChanges();
             return true;
+        }
+
+        public IEnumerable<PlatModel> GetAllPlats([FromQuery] int? filter)
+        {
+            return _dc.Plats
+                         .Where(p => p.CategorieId == filter || filter == null)
+                         .Select(p => new PlatModel
+                         {
+                             Id = p.Id,
+                             Nom = p.Nom,
+                             prix = p.Prix,
+                             Image = p.Image,
+                             CategorieNom = p.Categorie.Nom
+                         });
+        }
+
+        public void DeleteFile(string image)
+        {
+            if (image != null)
+            {
+                File.Delete(Path.Combine(_env.WebRootPath, "uploads", image)); // _env.WebRootPath trouve automatiquement le dossier uploads et le combine avec le nom de l'image
+            }
         }
     }
 }
