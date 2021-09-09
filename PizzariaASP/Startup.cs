@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PizzariaASP.services;
 using PizzariaDAL;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,11 @@ namespace PizzariaASP
             services.AddDbContext<PizzariaContext>(
                     option => option.UseSqlServer(Configuration.GetConnectionString("Default")) // La connectionstring ne se met pas ici c'est dans AppSettin
                 );
+            // Ajouter le service étendu (portée) ICategorieService et spécification du type d'implémentation (CategorieService)
+            services.AddScoped<ICategorieService, CategorieService>();
+            // Ajouter le service étendu (portée) IPlatService et spécification du type d'implémentation (PlatService)
+            services.AddScoped<IPlatService, PlatService>();
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

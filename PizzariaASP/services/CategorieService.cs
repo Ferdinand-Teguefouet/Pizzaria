@@ -39,7 +39,7 @@ namespace PizzariaASP.services
             return false;
         }
 
-        public IEnumerable<CategorieModel> GatAll()
+        public IEnumerable<CategorieModel> GetAll()
         {
             return _dc.categories.Select(c => new CategorieModel
             {

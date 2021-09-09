@@ -8,7 +8,7 @@ namespace PizzariaASP.services
 {
     public interface ICategorieService
     {
-        IEnumerable<CategorieModel> GatAll();
+        IEnumerable<CategorieModel> GetAll();
 
         CategorieUpdateModel GetOne(int id);
 

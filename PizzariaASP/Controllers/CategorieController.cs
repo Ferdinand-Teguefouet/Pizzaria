@@ -34,7 +34,7 @@ namespace PizzariaASP.Controllers
             //}
             //return View();
 
-            return View(_categorieService.GatAll());
+            return View(_categorieService.GetAll());
         }
 
         // afficher le formulaire
@@ -91,9 +91,12 @@ namespace PizzariaASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                _categorieService.Update(id, model);
-                TempData["success"] = $"La mise à jour a bien eu lieu!";
-                return RedirectToAction("Index");
+                if (_categorieService.Update(id, model))
+                {
+                    _categorieService.Update(id, model);
+                    TempData["success"] = $"La mise à jour a bien eu lieu!";
+                    return RedirectToAction("Index");
+                }                
             }
             return View(model);
         }
