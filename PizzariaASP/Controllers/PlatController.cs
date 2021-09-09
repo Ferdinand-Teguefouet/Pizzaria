@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using PizzariaASP.Models;
+using PizzariaASP.Security;
 using PizzariaASP.services;
 using PizzariaDAL;
 using PizzariaDAL.Entities;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace PizzariaASP.Controllers
 {
+    [CustomAuthorizaton("Admin")] // pour les autorisations
     public class PlatController : Controller
     {
         private readonly IPlatService _platService;

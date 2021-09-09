@@ -36,6 +36,20 @@ namespace PizzariaASP
             // Ajouter le service étendu (portée) IPlatService et spécification du type d'implémentation (PlatService)
             services.AddScoped<IPlatService, PlatService>();
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IClientService, ClientService>();
+            services.AddScoped<IHashService, HashService>();
+            services.AddScoped<IHashService, HashService>();
+
+            services.AddScoped<IMailService>(s => new MailService(Configuration.GetSection("Email").Get<MailConfiguration>()));
+
+            // ajout des cookies et sessions
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromDays(1);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+                });
 
         }
 
@@ -51,6 +65,7 @@ namespace PizzariaASP
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
+            app.UseSession();
 
             app.UseRouting();
 
