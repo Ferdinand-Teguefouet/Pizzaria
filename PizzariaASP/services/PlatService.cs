@@ -32,7 +32,7 @@ namespace PizzariaASP.services
             // Création du fichier dans le dossier uploads qui se trouve dans wwwroot
             if (form.File != null)
             {
-                fileName = _fiservice.AddFile(form.File);
+                fileName = _fiservice.AddFile(file: form.File);
             }
             Plat plat = new Plat
             {
@@ -106,7 +106,8 @@ namespace PizzariaASP.services
             toUpdate.Nom = form.Nom;
             toUpdate.Prix = decimal.Parse(form.Prix.Replace('.', ','));
             toUpdate.Description = form.Description;
-            toUpdate.Image = form.Image;
+            DeleteFile(toUpdate.Image);
+            toUpdate.Image = _fiservice.AddFile(form.File);
             _dc.SaveChanges();
             return true;
         }

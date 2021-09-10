@@ -62,14 +62,35 @@ body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
 }
-
+/******************** Mon code ************************/
 tbody tr:hover{
     background-color: lightblue !important;
 }
+#plat-img {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+#plat-img figure img {
+    max-width: 300px;
+    height: auto;
+}
+#plat-img figure figcaption{
+    text-align: center;
+    margin-top: 5px;
+    font-weight: 500;
+}
+#updateplat span{
+    border-radius: 2px;
+    background-color: orangered;
+    padding: 0px 10px 5px 10px;
+    color: white;
+}
+/******************************************/
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
 }

@@ -4,12 +4,10 @@
     ViewData["Title"] = "update";
 }
 
-<h1>update</h1>
-
-<h4>PlatUpdateModel</h4>
+<h3 id="updateplat">Mise à jour du plat <span>@Model.Nom</span></h3>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="update" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -37,10 +35,16 @@
             </div>
         </form>
     </div>
+    <div id="plat-img" class="col-md-4">
+        <figure>
+            <img src="~/uploads/@Model.Image" alt="@Model.Nom" class="img-thumbnail shadow" />
+            <figcaption>Image du plat actuel</figcaption>
+        </figure>
+    </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Afficher la liste des plats</a>
 </div>
 
 @section Scripts {

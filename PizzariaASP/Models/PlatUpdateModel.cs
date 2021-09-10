@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Pizzeria.ASP.Validations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,8 +20,8 @@ namespace PizzariaASP.Models
         [MaxLength(300)]
         [DataType(DataType.MultilineText)]
         public string Description { get; set; }
-        [MaxLength(300)]
-        [DataType(DataType.ImageUrl)]
+
+        [FileMimeType("image/jpg", "image/jpeg", "image/png", "image/x-icon")]
         public IFormFile File { get; set; }
         public string Image { get; set; }
     }
